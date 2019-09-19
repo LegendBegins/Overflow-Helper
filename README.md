@@ -7,19 +7,17 @@ usage: BofHelper.py [-h] [-o FILE] [-b] host port
 <br />
 positional arguments:
 
-  host                  The host executing the vulnerable application (usually your debugger)
+  host                   The host executing the vulnerable application (usually your debugger)
   
-  port                  The port the application is running on
+  port                   The port the application is running on
 <br />
 optional arguments:
 
-  -h, --help            show this help message and exit
+  -h, --help              show this help message and exit
   
-  -o FILE, --output FILE
-  
-                        Write payload script to FILE
+  -o FILE, --output FILE  Write payload script to FILE
                         
-  -b, --badchars        Attempt to detect bad characters with your debugger of choice
+  -b, --badchars          Attempt to detect bad characters with your debugger of choice
 
 
 <br /><br />
