@@ -27,7 +27,7 @@ optional arguments:
 <br /><br />
 IMPORTANT: If you use the debugger option, please ensure there are at least two spaces between the dump address and your actual memory, as well as between your memory and the ASCII representation. e.g.
 
-0x012345678  00 00 00 00 00 00 00 00  ........
+0x012345678 &nbsp;00 00 00 00 00 00 00 00&nbsp; ........
 
 I may modify the regex in the future to make this more robust, but for the time being, you have to extend your dump output margins in some debuggers. Olly formats it correct by default.
 
