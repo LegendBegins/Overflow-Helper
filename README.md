@@ -4,15 +4,21 @@ This script automates initial overflow, offset discovery, bad character detectio
 
 <br />
 usage: BofHelper.py [-h] [-o FILE] [-b] host port
-
+<br />
 positional arguments:
-  host                  The host executing the vulnerable application (usually your debugger)
-  port                  The port the application is running on
 
+  host                  The host executing the vulnerable application (usually your debugger)
+  
+  port                  The port the application is running on
+<br />
 optional arguments:
+
   -h, --help            show this help message and exit
+  
   -o FILE, --output FILE
+  
                         Write payload script to FILE
+                        
   -b, --badchars        Attempt to detect bad characters with your debugger of choice
 
 
