@@ -25,7 +25,11 @@ optional arguments:
 
 
 <br /><br />
-IMPORTANT: If you use the debugger option, please ensure there are at least two spaces between the dump address and your actual memory, as well as between your memory and the ASCII representation. e.g.
+IMPORTANT: 
+
+If you need to send more than raw data (like prefixing all buffers with "OPTION <buffer>)", search for the string "IF YOU WANT TO EDIT DATA SENT, DO IT HERE" in the script and add your prefix to all instances. I'll probably add a prefix and suffix option in the future, but for now, you need to add the data manually.
+
+If you use the debugger option, please ensure there are at least two spaces between the dump address and your actual memory, as well as between your memory and the ASCII representation. e.g.
 
 0x012345678 &nbsp;00 00 00 00 00 00 00 00&nbsp; ........
 
