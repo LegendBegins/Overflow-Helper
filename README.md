@@ -8,29 +8,32 @@ usage: BofHelper.py [-h] [-o FILE] [-b] [-p PREFIX] [-s SUFFIX] host port
 <br />
 
 positional arguments:
+
   host                  The host executing the vulnerable application (usually
                         your debugger)
+                        
   port                  The port the application is running on
 
 <br />
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -o FILE, --output FILE
-                        Write payload script to FILE
+
+  -h, --help &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show this help message and exit
+  
+  -o FILE, --output FILE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write payload script to FILE
                         
-  -b, --badchars        Attempt to detect bad characters with your debugger of choice
-  -p PREFIX, --prefix PREFIX
-                        Append a prefix to the beginning of your overflow string
-  -s SUFFIX, --suffix SUFFIX
-                        Append a suffix to the end of your overflow string
+  -b, --badchars &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Attempt to detect bad characters with your debugger of choice
+  
+  -p PREFIX, --prefix PREFIX &nbsp;&nbsp;&nbsp;Append a prefix to the beginning of your overflow string
+                        
+  -s SUFFIX, --suffix SUFFIX &nbsp;&nbsp;&nbsp;Append a suffix to the end of your overflow string
 
 <br /><br />
 IMPORTANT: 
 
 If you use the bad character detection option, please ensure there are at least two spaces between the dump address and your actual memory, as well as between your memory and the ASCII representation. e.g.
 
-0x012345678 &nbsp;00 00 00 00 00 00 00 00&nbsp; ........
+0x012345678 &nbsp;14 15 16 17 18 19 20 21&nbsp; ABCDEFGH
 
 I may modify the regex in the future to make this more robust, but for the time being, you have to extend your dump output margins in some debuggers. Olly formats it correct by default.
 
