@@ -9,10 +9,10 @@ usage: BofHelper.py [-h] [-o FILE] [-b] [-p PREFIX] [-s SUFFIX] host port
 
 positional arguments:
 
-  host                  The host executing the vulnerable application (usually
+  host &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The host executing the vulnerable application (usually
                         your debugger)
                         
-  port                  The port the application is running on
+  port &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The port the application is running on
 
 <br />
 
