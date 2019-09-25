@@ -4,32 +4,31 @@ This script automates initial overflow, offset discovery, bad character detectio
 
 <br />
 
-usage: BofHelper.py [-h] [-o FILE] [-b] host port
+usage: BofHelper.py [-h] [-o FILE] [-b] [-p PREFIX] [-s SUFFIX] host port
 <br />
 
 positional arguments:
+  host                  The host executing the vulnerable application (usually
+                        your debugger)
+  port                  The port the application is running on
 
-  host                   The host executing the vulnerable application (usually your debugger)
-  
-  port                   The port the application is running on
-  
 <br />
 
 optional arguments:
-
-  -h, --help              show this help message and exit
-  
-  -o FILE, --output FILE  Write payload script to FILE
+  -h, --help            show this help message and exit
+  -o FILE, --output FILE
+                        Write payload script to FILE
                         
-  -b, --badchars          Attempt to detect bad characters with your debugger of choice
-
+  -b, --badchars        Attempt to detect bad characters with your debugger of choice
+  -p PREFIX, --prefix PREFIX
+                        Append a prefix to the beginning of your overflow string
+  -s SUFFIX, --suffix SUFFIX
+                        Append a suffix to the end of your overflow string
 
 <br /><br />
 IMPORTANT: 
 
-If you need to send more than raw data (like prefixing all buffers with "OPTION <buffer>)", search for the string "IF YOU WANT TO EDIT DATA SENT, DO IT HERE" in the script and add your prefix to all instances. I'll probably add a prefix and suffix option in the future, but for now, you need to add the data manually.
-
-If you use the debugger option, please ensure there are at least two spaces between the dump address and your actual memory, as well as between your memory and the ASCII representation. e.g.
+If you use the bad character detection option, please ensure there are at least two spaces between the dump address and your actual memory, as well as between your memory and the ASCII representation. e.g.
 
 0x012345678 &nbsp;00 00 00 00 00 00 00 00&nbsp; ........
 
