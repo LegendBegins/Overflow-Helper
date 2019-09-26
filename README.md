@@ -2,6 +2,7 @@ This is a simple buffer overflow helper script I originally wrote to make the pr
 
 This script automates initial overflow, offset discovery, bad character detection, and shellcode script generation. You just have to push a couple buttons and find the address of the instruction you want to jump to. And if if the exploitation process is more complex than that, it writes the shellcode script to a file for you to edit and fix all the non-trivialities (may be updated in the future to automate some non-trivialities). e.g. If you need to execute custom instructions (like modifying the stack pointer and jumping to it) before your shellcode, you're going to have to add that manually. If you use this on the OSCP exam, be careful. I don't consider it an automatic exploitation tool yet (though I may eventually create a fully-automated tool), but keep in mind that this is a _helper_ script meant to take care of some of the more tedious processes for you behind the scenes. You still need to interact with your debugger and understand how these overflows work conceptually. Ensuring that information is clearly communicated in your report is your responsibility.
 
+
 <br />
 
 usage: BofHelper.py [-h] [-o FILE] [-b] [-p PREFIX] [-s SUFFIX] host port
@@ -29,6 +30,9 @@ optional arguments:
   -s SUFFIX, --suffix SUFFIX &nbsp;&nbsp;&nbsp;Append a suffix to the end of your overflow string
 
 <br /><br />
+
+Example: ./BofHelper.py -o exploit.py -b -p 'USER ' 127.0.0.1 9001
+
 IMPORTANT: 
 
 If you use the bad character detection option, please ensure there are at least two spaces between the dump address and your actual memory, as well as between your memory and the ASCII representation. e.g.
