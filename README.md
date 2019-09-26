@@ -41,6 +41,10 @@ If you use the bad character detection option, please ensure there are at least 
 
 I may modify the regex in the future to make this more robust, but for the time being, you have to extend your dump output margins in some debuggers. Olly formats it correct by default.
 
+Be sure to paste your data dump every time it asks because fixing a bad character could lead to new bad characters being discovered. In order to mitigate this, the script loops the detection process until all bad characters have been discovered.
+
+Also, when generating your shellcode with venom, you HAVE to use the -f py option or it will fail to generate. This will be automated in the future (along with automatically adding the bad characters), but for right now, you have to pretend you're running the command directly in the console. 
+
 <br /><br />
 
 Example video coming soon!
