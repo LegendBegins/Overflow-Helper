@@ -51,5 +51,21 @@ Example video coming soon!
 
 <br /><br />
 
+FAQ:
+
+Q: The bad character detection asks me to paste the dump more than once!
+
+A: Because removing bad characters can reveal new ones, you have to paste the dump until it figures out that all bad characters have been removed.
+
+Q: The script crashes when I generate a venom payload!
+
+A: Make sure you're using -f py so the script can properly read the output.
+
+Q: Can you make it detect JMP ESP for me?
+
+A: Not without integrating it into a debugger (which I may make a version for in the future).
+
+<br /><br />
+
 License TL;DR:
 Use this script wherever you want, however you want, but include a link to https://YouTube.com/LegendBegins whenever you distribute it. All my content is gaming related, but I figured this was as good a place as any to advertise.
